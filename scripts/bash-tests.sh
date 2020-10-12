@@ -1,8 +1,8 @@
 #!/bin/bash
 
-./scripts/bash-test.sh < teste-spec.txt
-./scripts/bash-test.sh < teste-40
-./scripts/bash-test.sh < teste-100.txt
-./scripts/bash-test.sh < teste-250.txt
-./scripts/bash-test.sh < teste-500.txt
-./scripts/bash-test.sh < teste-1000.txt
+./atv2.exe < ./testes/teste-spec.txt
+./atv2.exe < ./testes/teste-40
+./atv2.exe < ./testes/teste-100.txt
+./atv2.exe < ./testes/teste-250.txt
+./atv2.exe < ./testes/teste-500.txt
+./atv2.exe < ./testes/teste-1000.txt
