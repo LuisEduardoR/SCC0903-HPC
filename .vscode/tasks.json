@@ -1,0 +1,26 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "C/C++: g++.exe build",
+            "type": "shell",
+            "command": "mingw32-make",
+            "args": [
+                "all"
+            ],
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "C/C++: g++.exe build and run tests",
+            "type": "shell",
+            "command": "Start-Process ./atv2.exe -RedirectStandardInput ./input.txt -NoNewWindow -Wait",
+            "problemMatcher": []
+        } 
+    ]
+}
