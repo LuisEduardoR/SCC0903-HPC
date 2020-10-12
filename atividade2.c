@@ -15,35 +15,35 @@ void printa_matriz(size_t n, size_t m, double **mat) {
 
 }
 
-void calcula_media_aritmetica(size_t n, int i, double *linha, double **resposta) {
-    resposta[0][i] = i * 10000 + 0; // TODO: substituir pelo resultado
+double calcula_media_aritmetica(size_t len, double *linha) {
+    return 0; // TODO: substituir pelo resultado
 }
 
-void calcula_media_harmonica(size_t n, int i, double *linha, double **resposta) {
-    resposta[1][i] = i * 10000 + 1; // TODO: substituir pelo resultado
+double calcula_media_harmonica(size_t len, double *linha) {
+    return 1; // TODO: substituir pelo resultado
 }
 
-void calcula_mediana(size_t n, int i, double *linha, double **resposta) {
-    resposta[2][i] = i * 10000 + 2; // TODO: substituir pelo resultado
+double calcula_mediana(size_t len, double *linha) {
+    return 2; // TODO: substituir pelo resultado
 }
 
-void calcula_moda(size_t n, int i, double *linha, double **resposta) {
-    resposta[3][i] = i * 10000 + 3; // TODO: substituir pelo resultado
+double calcula_moda(size_t len, double *linha) {
+    return 3; // TODO: substituir pelo resultado
 }   
 
-void calcula_variancia(size_t n, int i, double *linha, double **resposta) {
+double calcula_variancia(size_t len, double *linha, double media) {
     // media_aritmetica: resposta[0][]
-    resposta[4][i] = i * 10000 + 4; // TODO: substituir pelo resultado
+    return 4; // TODO: substituir pelo resultado
 }
 
-void calcula_desvio_padrao(size_t n, int i, double *linha, double **resposta) {
+double calcula_desvio_padrao(size_t len, double *linha, double variancia) {
     // media_aritmetica: resposta[4][]
-    resposta[5][i] = i * 10000 + 5; // TODO: substituir pelo resultado
+    return 5; // TODO: substituir pelo resultado
 }
 
-void calcula_coeficiente_variacao(size_t n, int i, double *linha, double **resposta) {
-    // media_aritmetica: resposta[5][]
-    resposta[6][i] = i * 10000 + 6; // TODO: substituir pelo resultado
+// Coeficiente de variação: Razão entre o desvio padrão e a média aritmética. 
+double calcula_coeficiente_variacao(double desvio, double media) {
+    return desvio / media;
 }
 
 int main() {
@@ -83,28 +83,33 @@ int main() {
                     // Essas tarefas são executas sequêncialmente pois necessitam do resultado das anteriores, 
                     // tentar paraleliza-las provavelmente causaria uma perda de tempo muito grande com a 
                     // sincronização.
-                    calcula_media_aritmetica(n, i, matriz[i], matriz_resposta);
-                    calcula_variancia(n, i, matriz[i], matriz_resposta);
-                    calcula_desvio_padrao(n, i, matriz[i], matriz_resposta);
-                    calcula_coeficiente_variacao(n, i, matriz[i], matriz_resposta);
+                    double media_a = calcula_media_aritmetica(n, matriz[i]);
+                    double variancia = calcula_variancia(n, matriz[i], media_a); // Depende da média.
+                    double desvio = calcula_desvio_padrao(n, matriz[i], variancia); // Depende da media e da variância.
+                    double coef_variacao = calcula_coeficiente_variacao(desvio, media_a); // Depende da media e do desvio padrão (por consequência também depende da variância).
+
+                    matriz_resposta[0][i] = i * 10000 + media_a;
+                    matriz_resposta[4][i] = i * 10000 + variancia;
+                    matriz_resposta[5][i] = i * 10000 + desvio;
+                    matriz_resposta[6][i] = i * 10000 + coef_variacao;
                 }
 
                 // Cria a task da média harmônica.
                 # pragma omp task
                 {
-                    calcula_media_harmonica(n, i, matriz[i], matriz_resposta);
+                    matriz_resposta[1][i] = i * 10000 + calcula_media_harmonica(n, matriz[i]);
                 }
 
                 // Cria a task da mediana.
                 # pragma omp task
                 {
-                    calcula_mediana(n, i, matriz[i], matriz_resposta);
+                    matriz_resposta[2][i] = i * 10000 + calcula_mediana(n, matriz[i]);
                 }
 
                 // Cria a task da moda.
                 # pragma omp task
                 {
-                    calcula_moda(n, i, matriz[i], matriz_resposta);
+                    matriz_resposta[3][i] = i * 10000 + calcula_moda(n, matriz[i]);
                 }
 
             }
