@@ -2,6 +2,7 @@
 # include <math.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include <string.h>
 
 # define THREADS 8
 
@@ -13,6 +14,10 @@ void printa_matriz(size_t n, size_t m, double **mat) {
         printf("\n");
     }
 
+}
+
+int cmpValues (const void *a, const void *b){
+    return ( *(double *)a - *(double *)b );
 }
 
 // Média aritmética Somatório de todos os elementos da amostra, divididos pelo tamanho
@@ -41,17 +46,65 @@ double calcula_media_harmonica(size_t len, double *linha) {
     return (len / inv_sum);
 
 }
+
 // Mediana: Elemento médio da amostra (elemento médio da coluna ordenada). Para um
 // número par de elementos, a mediana é a média entre os elementos do meio
 // ((n/2+n/2+1)/2).
 double calcula_mediana(size_t len, double *linha) {
-    return 2; // TODO: substituir pelo resultado
+    
+    // Copiando vetor
+    double *copied_vec = malloc( len * sizeof(double) );
+    memcpy(copied_vec, linha, len * sizeof(double));
+    
+    // Ordenando a copia -> bubble :)
+    /*for(int i=0; i<len; i++){
+        for(int j=i+1; j<len; j++){
+            if(copied_vec[i] > copied_vec[j]){
+                double aux = copied_vec[i];
+                copied_vec[i] = copied_vec[j];
+                copied_vec[j] = aux;
+            }
+        }
+    }
+    */
+    // ordena com quicksort ;)
+    qsort(copied_vec, len, sizeof(double), cmpValues);
+
+    double mediana;
+    if (len % 2 == 0)
+        // media entre os elementos do meio
+        mediana = (copied_vec[len/2 -1] +copied_vec[len/2])/2;
+    else
+        mediana = copied_vec[len/2 -1];
+
+    free(copied_vec);
+    return mediana; 
 }
 
 // Moda: Elemento mais frequente da amostra (elemento que mais aparece na coluna, se
 // houver mais de um, considera-se somente o primeiro. Se não houver, retorna -1).
 double calcula_moda(size_t len, double *linha) {
-    return 3; // TODO: substituir pelo resultado
+    
+    // id na pos 0 e ocorrencia na pos 1
+    int id_ocorrencias[2] = {0, 1};
+    
+    for (int i=0; i<len; i++){
+        // inicia considerando primeira ocorrencia
+        int ocorrencias = 1;
+        for (int j=i+1; j<len; j++){
+            // acumula novas ocorrencias
+            if(linha[i] == linha[j])
+                ocorrencias += 1; 
+        }
+        
+        // troca moda se ocorreu mais vezes
+        if (ocorrencias > id_ocorrencias[1]){
+            id_ocorrencias[0] = i;
+            id_ocorrencias[1] = ocorrencias;
+        }
+    }
+
+    return id_ocorrencias[1] > 1? linha[id_ocorrencias[0]] : -1.0; 
 }   
 
 // Variância: Soma dos quadrados das diferenças entre o elemento da amostra e a média
