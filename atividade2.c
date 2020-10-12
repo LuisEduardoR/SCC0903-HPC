@@ -125,6 +125,7 @@ int main() {
                     matriz_resposta[4][i] = variancia;
                     matriz_resposta[5][i] = desvio;
                     matriz_resposta[6][i] = coef_variacao;
+
                 }
 
                 // Cria a task da média harmônica.
