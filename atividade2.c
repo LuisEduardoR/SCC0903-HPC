@@ -16,7 +16,12 @@ void printa_matriz(size_t n, size_t m, double **mat) {
 }
 
 double calcula_media_aritmetica(size_t len, double *linha) {
-    return 0; // TODO: substituir pelo resultado
+    
+    double soma_acc = 0;
+    for (int i=0; i < len; i++)
+        soma_acc += linha[i];
+
+    return soma_acc/len; // TODO: substituir pelo resultado
 }
 
 double calcula_media_harmonica(size_t len, double *linha) {
@@ -88,7 +93,7 @@ int main() {
                     double desvio = calcula_desvio_padrao(variancia); // Depende da variância(por consequência também depende da média).
                     double coef_variacao = calcula_coeficiente_variacao(desvio, media_a); // Depende da media e do desvio padrão (por consequência também depende da variância).
 
-                    matriz_resposta[0][i] = i * 10000 + media_a;
+                    matriz_resposta[0][i] = media_a;
                     matriz_resposta[4][i] = i * 10000 + variancia;
                     matriz_resposta[5][i] = i * 10000 + desvio;
                     matriz_resposta[6][i] = i * 10000 + coef_variacao;
