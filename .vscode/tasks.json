@@ -4,7 +4,7 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "C/C++: g++.exe build",
+            "label": "g++.exe build",
             "type": "shell",
             "command": "mingw32-make",
             "args": [
@@ -17,7 +17,7 @@
             }
         },
         {
-            "label": "C/C++: g++.exe build and run tests",
+            "label": "Run tests",
             "type": "shell",
             "command": "Start-Process ./atv2.exe -RedirectStandardInput ./input.txt -NoNewWindow -Wait",
             "problemMatcher": []

@@ -36,9 +36,9 @@ double calcula_variancia(size_t len, double *linha, double media) {
     return 4; // TODO: substituir pelo resultado
 }
 
-double calcula_desvio_padrao(size_t len, double *linha, double variancia) {
-    // media_aritmetica: resposta[4][]
-    return 5; // TODO: substituir pelo resultado
+// Desvio padrão: Raiz quadrada da variância.
+double calcula_desvio_padrao(double variancia) {
+    return sqrt(variancia);
 }
 
 // Coeficiente de variação: Razão entre o desvio padrão e a média aritmética. 
@@ -85,7 +85,7 @@ int main() {
                     // sincronização.
                     double media_a = calcula_media_aritmetica(n, matriz[i]);
                     double variancia = calcula_variancia(n, matriz[i], media_a); // Depende da média.
-                    double desvio = calcula_desvio_padrao(n, matriz[i], variancia); // Depende da media e da variância.
+                    double desvio = calcula_desvio_padrao(variancia); // Depende da variância(por consequência também depende da média).
                     double coef_variacao = calcula_coeficiente_variacao(desvio, media_a); // Depende da media e do desvio padrão (por consequência também depende da variância).
 
                     matriz_resposta[0][i] = i * 10000 + media_a;
