@@ -65,8 +65,8 @@ double calcula_variancia(size_t len, double *linha, double media) {
         sum += (dif * dif);
     }
 
-    // Retorna a variância.
-    return sum;
+    // Retorna a variância da amostra.
+    return sum / (len - 1);
 }
 
 // Desvio padrão: Raiz quadrada da variância.
