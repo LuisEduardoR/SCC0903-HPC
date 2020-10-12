@@ -15,30 +15,58 @@ void printa_matriz(size_t n, size_t m, double **mat) {
 
 }
 
+// Média aritmética Somatório de todos os elementos da amostra, divididos pelo tamanho
+// da amostra.
 double calcula_media_aritmetica(size_t len, double *linha) {
-    
-    double soma_acc = 0;
-    for (int i=0; i < len; i++)
-        soma_acc += linha[i];
 
-    return soma_acc/len; // TODO: substituir pelo resultado
+    // Calcula o somatório dos elementos da linha.
+    double sum = 0;
+    for(size_t i = 0; i < len; i++)
+        sum += linha[i];
+
+    // Retorna a média aritmética dos elementos.
+    return (sum / len);
+
 }
 
+// Média harmônica: Razão entre o tamanho da amostra e o somatório do inverso das amostras.
 double calcula_media_harmonica(size_t len, double *linha) {
-    return 1; // TODO: substituir pelo resultado
-}
 
+    // Calcula o somatório dos inversos dos elementos da linha.
+    double inv_sum = 0;
+    for(size_t i = 0; i < len; i++)
+        inv_sum += 1 / linha[i];
+
+    // Retorna a média harmônica dos elementos.
+    return (len / inv_sum);
+
+}
+// Mediana: Elemento médio da amostra (elemento médio da coluna ordenada). Para um
+// número par de elementos, a mediana é a média entre os elementos do meio
+// ((n/2+n/2+1)/2).
 double calcula_mediana(size_t len, double *linha) {
     return 2; // TODO: substituir pelo resultado
 }
 
+// Moda: Elemento mais frequente da amostra (elemento que mais aparece na coluna, se
+// houver mais de um, considera-se somente o primeiro. Se não houver, retorna -1).
 double calcula_moda(size_t len, double *linha) {
     return 3; // TODO: substituir pelo resultado
 }   
 
+// Variância: Soma dos quadrados das diferenças entre o elemento da amostra e a média
+// aritmética calculada.
 double calcula_variancia(size_t len, double *linha, double media) {
-    // media_aritmetica: resposta[0][]
-    return 4; // TODO: substituir pelo resultado
+
+    // Calcula o somatório dos quadrados das diferenças da linha.
+    double sum = 0;
+    for(size_t i = 0; i < len; i++) {
+        double dif = (linha[i] - media);
+        sum += (dif * dif);
+    }
+
+    // Retorna a variância.
+    return sum;
 }
 
 // Desvio padrão: Raiz quadrada da variância.
@@ -94,15 +122,16 @@ int main() {
                     double coef_variacao = calcula_coeficiente_variacao(desvio, media_a); // Depende da media e do desvio padrão (por consequência também depende da variância).
 
                     matriz_resposta[0][i] = media_a;
-                    matriz_resposta[4][i] = i * 10000 + variancia;
-                    matriz_resposta[5][i] = i * 10000 + desvio;
-                    matriz_resposta[6][i] = i * 10000 + coef_variacao;
+                    matriz_resposta[4][i] = variancia;
+                    matriz_resposta[5][i] = desvio;
+                    matriz_resposta[6][i] = coef_variacao;
+
                 }
 
                 // Cria a task da média harmônica.
                 # pragma omp task
                 {
-                    matriz_resposta[1][i] = i * 10000 + calcula_media_harmonica(n, matriz[i]);
+                    matriz_resposta[1][i] = calcula_media_harmonica(n, matriz[i]);
                 }
 
                 // Cria a task da mediana.
