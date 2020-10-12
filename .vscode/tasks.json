@@ -6,7 +6,10 @@
         {
             "label": "g++.exe build",
             "type": "shell",
-            "command": "mingw32-make",
+            "command": "make",
+            "windows": {
+                "command": "mingw32-make"
+            },
             "args": [
                 "all"
             ],
@@ -19,7 +22,10 @@
         {
             "label": "g++.exe build (Debug)",
             "type": "shell",
-            "command": "mingw32-make",
+            "command": "make",
+            "windows": {
+                "command": "mingw32-make"
+            },
             "args": [
                 "debug"
             ],
@@ -30,16 +36,13 @@
             }
         },
         {
-            "label": "Run tests (Windows)",
+            "label": "Run tests",
             "type": "shell",
-            "command": "Start-Process ./atv2.exe -RedirectStandardInput ./input.txt -NoNewWindow -Wait",
+            "command": "./scripts/bash-tests.sh",
+            "windows": {
+                "command": "./scripts/windows-tests.ps1",
+            },
             "problemMatcher": []
         },
-        {
-            "label": "Run tests (Linux)",
-            "type": "shell",
-            "command": "./atv2.exe < ./input.txt > output.txt",
-            "problemMatcher": []
-        } 
     ]
 }

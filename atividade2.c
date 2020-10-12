@@ -17,6 +17,9 @@
 
 # define THREADS 8
 
+# define PRINT_TEMPO 1
+# define PRINT_MATRIZ 1
+
 // Faz a impressão da matriz. 
 void printa_matriz(size_t n, size_t m, double **mat) {
 
@@ -227,9 +230,13 @@ int main() {
     wtime = omp_get_wtime ( ) - wtime;
 
     // Printa a matriz com os resultados
-    printa_matriz(7, m, matriz_resposta);
+    # if PRINT_MATRIZ
+        printa_matriz(7, m, matriz_resposta);
+    # endif
     
-    printf("\nElapsed wall clock time = %.5f\n", wtime );
+    # if PRINT_TEMPO
+        printf("\nElapsed wall clock time = %.5f\n", wtime );
+    # endif
 
     // Desaloca a matriz transposta.
     for(size_t i = 0; i < m; i++)
