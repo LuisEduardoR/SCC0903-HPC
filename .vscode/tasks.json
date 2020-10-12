@@ -17,9 +17,28 @@
             }
         },
         {
-            "label": "Run tests",
+            "label": "g++.exe build (Debug)",
+            "type": "shell",
+            "command": "mingw32-make",
+            "args": [
+                "debug"
+            ],
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Run tests (Windows)",
             "type": "shell",
             "command": "Start-Process ./atv2.exe -RedirectStandardInput ./input.txt -NoNewWindow -Wait",
+            "problemMatcher": []
+        },
+        {
+            "label": "Run tests (Linux)",
+            "type": "shell",
+            "command": "./atv2.exe < ./input.txt > output.txt",
             "problemMatcher": []
         } 
     ]
