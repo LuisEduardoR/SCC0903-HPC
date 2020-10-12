@@ -9,7 +9,7 @@ void printa_matriz(size_t n, size_t m, double **mat) {
 
     for(size_t i = 0; i < n; i++) {
         for(size_t j = 0; j < m; j++)
-            printf(" %lf\t", mat[i][j]);
+            printf(" %.1lf\t", mat[i][j]);
         printf("\n");
     }
 
@@ -66,7 +66,7 @@ double calcula_variancia(size_t len, double *linha, double media) {
     }
 
     // Retorna a variância.
-    return sum;
+    return sum/(len-1);
 }
 
 // Desvio padrão: Raiz quadrada da variância.
@@ -137,13 +137,13 @@ int main() {
                 // Cria a task da mediana.
                 # pragma omp task
                 {
-                    matriz_resposta[2][i] = i * 10000 + calcula_mediana(n, matriz[i]);
+                    matriz_resposta[2][i] = calcula_mediana(n, matriz[i]);
                 }
 
                 // Cria a task da moda.
                 # pragma omp task
                 {
-                    matriz_resposta[3][i] = i * 10000 + calcula_moda(n, matriz[i]);
+                    matriz_resposta[3][i] = calcula_moda(n, matriz[i]);
                 }
 
             }
