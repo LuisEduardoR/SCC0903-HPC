@@ -27,7 +27,7 @@ int main()
 
     // Escaneia o tamanho da matriz.
     size_t n, m;
-    scanf(" %lu %lu", &n, &m);
+    scanf(" %llu %llu", &n, &m);
 
     // Aloca a matriz transposta.
     double **matriz = calloc(m, sizeof(double*)); // Aloca as linhas.
@@ -48,7 +48,7 @@ int main()
     // Começa a contar o tempo.
     double wtime = omp_get_wtime ( );
 
-            // Cria tasks para os dados de cada linha da matriz transposta.
+    // (Não cria as tasks, pois essa é a versão sequêncial) Cria tasks para os dados de cada linha da matriz transposta.
     for(size_t i = 0; i < m; i++) {
         
         // Essas tarefas são executas sequêncialmente pois necessitam do resultado das anteriores, 

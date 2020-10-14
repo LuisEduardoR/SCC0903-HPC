@@ -36,11 +36,20 @@
             }
         },
         {
-            "label": "Run tests",
+            "label": "Run tests (parallel)",
             "type": "shell",
-            "command": "./scripts/bash-tests.sh",
+            "command": "./scripts/bash-tests-parallel.sh",
             "windows": {
-                "command": "./scripts/windows-tests.ps1",
+                "command": "./scripts/windows-tests-parallel.ps1",
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Run tests (sequential)",
+            "type": "shell",
+            "command": "./scripts/bash-tests-sequential.sh",
+            "windows": {
+                "command": "./scripts/windows-tests-sequential.ps1",
             },
             "problemMatcher": []
         },
