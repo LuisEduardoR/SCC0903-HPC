@@ -1,3 +1,14 @@
+/*
+   Universidade de Sao Paulo - ICMC
+   SSC0903 - Computacao de Alto Desempenho
+   Atividade 2
+   Grupo:
+   João Pedro A. S. Secundino (10692054);
+   João Pedro Uchôa Cavalcante (10801169);
+   Luís Eduardo Rozante de Freitas Pereira (10734794);
+   Sérgio Ricardo G. B. Filho (10408386);
+*/
+
 # include <omp.h>
 # include <math.h>
 # include <stdio.h>

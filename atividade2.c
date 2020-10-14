@@ -20,7 +20,7 @@ int main() {
 
     // Escaneia o tamanho da matriz.
     size_t n, m;
-    scanf(" %llu %llu", &n, &m);
+    scanf(" %lu %lu", &n, &m);
 
     // Aloca a matriz transposta.
     double **matriz = calloc(m, sizeof(double*)); // Aloca as linhas.
