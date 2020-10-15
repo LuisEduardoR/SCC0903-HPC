@@ -134,7 +134,7 @@ double calcula_coeficiente_variacao(double desvio, double media) {
 }
 
 // Cria as tasks que fazem os cálculos da linha_inicio até a linha_fim.
-int cria_tasks(double **matriz, double **matriz_resposta, size_t len_linha, size_t linha_inicio, size_t linha_fim) {
+void cria_tasks(double **matriz, double **matriz_resposta, size_t len_linha, size_t linha_inicio, size_t linha_fim) {
 
     // Cria a task da média aritmética, da variância, do desvio padrão e do coeficiente de variação.
     # pragma omp task

@@ -19,7 +19,7 @@
 # define THREADS 8
 
 # define PRINT_TEMPO 1
-# define PRINT_MATRIZ 1
+# define PRINT_MATRIZ 0
 
 
 int main() 

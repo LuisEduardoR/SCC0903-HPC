@@ -4,3 +4,5 @@ Start-Process ./atv2-seq.exe -RedirectStandardInput ./testes/teste-100.txt -NoNe
 Start-Process ./atv2-seq.exe -RedirectStandardInput ./testes/teste-250.txt -NoNewWindow -Wait;
 Start-Process ./atv2-seq.exe -RedirectStandardInput ./testes/teste-500.txt -NoNewWindow -Wait; 
 Start-Process ./atv2-seq.exe -RedirectStandardInput ./testes/teste-1000.txt -NoNewWindow -Wait;
+Start-Process ./atv2-seq.exe -RedirectStandardInput ./testes/teste-alto.txt -NoNewWindow -Wait; 
+Start-Process ./atv2-seq.exe -RedirectStandardInput ./testes/teste-largo.txt -NoNewWindow -Wait;
