@@ -132,3 +132,69 @@ double calcula_desvio_padrao(double variancia) {
 double calcula_coeficiente_variacao(double desvio, double media) {
     return desvio / media;
 }
+
+// Cria as tasks que fazem os cálculos da linha_inicio até a linha_fim.
+int cria_task(double **matriz, double **matriz_resposta, size_t len_linha, size_t linha_inicio, size_t linha_fim) {
+
+    // Cria a task da média aritmética, da variância, do desvio padrão e do coeficiente de variação.
+    # pragma omp task
+    {
+
+        // Executa os cálculos necessários para as linhas
+        for(size_t i = linha_inicio; i < linha_fim; i++) {
+
+            // Essas tarefas são executas sequêncialmente pois necessitam do resultado das anteriores, 
+            // tentar paraleliza-las provavelmente causaria uma perda de tempo muito grande com a 
+            // sincronização.
+
+            double media_a = calcula_media_aritmetica(len_linha, matriz[i]);
+            double variancia = calcula_variancia(len_linha, matriz[i], media_a); // Depende da média.
+            double desvio = calcula_desvio_padrao(variancia); // Depende da variância(por consequência também depende da média).
+            double coef_variacao = calcula_coeficiente_variacao(desvio, media_a); // Depende da media e do desvio padrão (por consequência também depende da variância).
+
+            matriz_resposta[0][i] = media_a;
+            matriz_resposta[4][i] = variancia;
+            matriz_resposta[5][i] = desvio;
+            matriz_resposta[6][i] = coef_variacao;
+
+        }
+
+    }
+
+    // Cria a task da média harmônica.
+    # pragma omp task
+    {
+        // Executa os cálculos necessários para as linhas
+        for(int i = linha_inicio; i < linha_fim; i++)
+            matriz_resposta[1][i] = calcula_media_harmonica(len_linha, matriz[i]);
+    }
+
+    // Cria a task da moda e da mediana.
+    # pragma omp task
+    {
+
+
+        // Aloca espaço para guardar a versão ordenada da linha.
+        double *linha_ord = malloc(len_linha * sizeof(double));
+
+        // Executa os cálculos necessários para as linhas
+        for(size_t i = linha_inicio; i < linha_fim; i++) {
+
+            // Essas tarefas são executas juntas e sequencialmente pois necessitam da linha com os dados ordenada. 
+            // Isso é feito para evitar ter que ordenar o vetor duas vezes e para facilitar a sincronização, já que 
+            // a média e mediana são assintóticamente ingsignificantes comparadas a ordenção.
+
+            // Copia a linha para o vetor e a ordena.
+            memcpy(linha_ord, matriz[i], len_linha * sizeof(double)); // O(n)
+            qsort(linha_ord, len_linha, sizeof(double), fun_comparacao); // O(n(log(n)))
+
+            matriz_resposta[2][i] = calcula_mediana(len_linha, linha_ord); // O(1)
+            matriz_resposta[3][i] = calcula_moda(len_linha, linha_ord); // O(n)
+
+        }
+
+        // Libera a memória usada para o guardar a linha ordenada.
+        free(linha_ord);
+
+    }
+}

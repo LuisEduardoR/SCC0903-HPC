@@ -11,7 +11,7 @@
 
 # include "atividade2.h"
 
-# define THREADS 12
+# define THREADS 8
 
 # define PRINT_TEMPO 1
 # define PRINT_MATRIZ 1
@@ -47,56 +47,22 @@ int main() {
         # pragma omp single
         {
 
-            // Cria tasks para os dados de cada linha da matriz transposta.
-            for(size_t i = 0; i < m; i++) {
+            // Pega o número de threads usadas pelo OMP.
+            int n_threads = omp_get_num_threads();
 
-                // Cria a task da média aritmética, da variância, do desvio padrão e do coeficiente de variação.
-                # pragma omp task
-                {
-                    // Essas tarefas são executas sequêncialmente pois necessitam do resultado das anteriores, 
-                    // tentar paraleliza-las provavelmente causaria uma perda de tempo muito grande com a 
-                    // sincronização.
+            // Divide as linhas da matriz transposta baseada no número de threads e cria tasks para
+            // fazer os cálculos necessários nessas regiões.
+            int div_linhas = (m / n_threads);
+            int resto = m % n_threads;
+            for(size_t i = 0; i < (n_threads < m ? n_threads : m); i++) {
 
-                    double media_a = calcula_media_aritmetica(n, matriz[i]);
-                    double variancia = calcula_variancia(n, matriz[i], media_a); // Depende da média.
-                    double desvio = calcula_desvio_padrao(variancia); // Depende da variância(por consequência também depende da média).
-                    double coef_variacao = calcula_coeficiente_variacao(desvio, media_a); // Depende da media e do desvio padrão (por consequência também depende da variância).
+                // Calcula a primeira e última linha que serão atribuídas as tasks nessa iteração.
+                int inicio, fim;
+                inicio = i * div_linhas + i * (i < resto) + resto * (i >= resto);
+                fim = inicio + div_linhas + 1 * (i < resto);
 
-                    matriz_resposta[0][i] = media_a;
-                    matriz_resposta[4][i] = variancia;
-                    matriz_resposta[5][i] = desvio;
-                    matriz_resposta[6][i] = coef_variacao;
-
-                }
-
-                // Cria a task da média harmônica.
-                # pragma omp task
-                {
-                    matriz_resposta[1][i] = calcula_media_harmonica(n, matriz[i]);
-                }
-
-                // Cria a task da moda e da mediana.
-                # pragma omp task
-                {
-
-                    // Essas tarefas são executas juntas e sequencialmente pois necessitam da linha com os dados ordenada. 
-                    // Isso é feito para evitar ter que ordenar o vetor duas vezes e para facilitar a sincronização, já que 
-                    // a média e mediana são assintóticamente ingsignificantes comparadas a ordenção.
-
-                    // Aloca espaço para guardar a versão ordenada da linha e copia ela.
-                    double *linha_ord = malloc(n * sizeof(double));
-                    memcpy(linha_ord, matriz[i], n * sizeof(double));
-
-                    // Ordena os elementos da linha.
-                    qsort(linha_ord, n, sizeof(double), fun_comparacao); // O(n(log(n)))
-
-                    matriz_resposta[2][i] = calcula_mediana(n, linha_ord); // O(1)
-                    matriz_resposta[3][i] = calcula_moda(n, linha_ord); // O(n)
-
-                    // Libera a memória usada para o guardar a linha ordenada.
-                    free(linha_ord);
-
-                }
+                // Crias as tasks para essa região caso ela não seja vazia.
+                cria_task(matriz, matriz_resposta, n, inicio, fim);
 
             }
 
