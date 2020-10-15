@@ -13,8 +13,9 @@
 
 # define THREADS 8
 
-# define PRINT_TEMPO 1
+# define PRINT_TEMPO 0
 # define PRINT_MATRIZ 1
+# define PRINT_LINHAS_TASKS 0
 
 int main() {
 
@@ -61,8 +62,13 @@ int main() {
                 inicio = i * div_linhas + i * (i < resto) + resto * (i >= resto);
                 fim = inicio + div_linhas + 1 * (i < resto);
 
+                // Printa a divisão das linhas que será usada para a criação das tasks.
+                # if PRINT_LINHAS_TASKS
+                    printf("Criando tasks para as linhas %d a %d (n_threads = %d)\n", inicio, fim, n_threads);
+                # endif
+
                 // Crias as tasks para essa região caso ela não seja vazia.
-                cria_task(matriz, matriz_resposta, n, inicio, fim);
+                cria_tasks(matriz, matriz_resposta, n, inicio, fim);
 
             }
 
