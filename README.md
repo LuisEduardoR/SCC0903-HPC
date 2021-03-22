@@ -1,2 +1,3 @@
-# scc0903-omp-tasks
-Assignment for the SSC0903 - Computação de Alto Desempenho class on ICMC - USP
+# SCC0903-HPC-Tasks
+
+Assignments for the SSC0903 - High Performance Computing class on ICMC - University of São Paulo during the second semester of 2020
